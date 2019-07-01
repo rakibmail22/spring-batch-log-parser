@@ -1,9 +1,17 @@
 package com.ef;
 
-import com.ef.config.RunParamConfig;
+import org.springframework.batch.core.Job;
+import org.springframework.batch.core.JobParameters;
+import org.springframework.batch.core.JobParametersInvalidException;
+import org.springframework.batch.core.launch.JobLauncher;
+import org.springframework.batch.core.repository.JobExecutionAlreadyRunningException;
+import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
+import org.springframework.batch.core.repository.JobRestartException;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.core.env.CommandLinePropertySource;
 import org.springframework.core.env.SimpleCommandLinePropertySource;
+
+import java.io.IOException;
 
 /**
  * @author bashir
@@ -11,18 +19,21 @@ import org.springframework.core.env.SimpleCommandLinePropertySource;
  */
 public class Parser {
 
-    private static final String QUERY = "SELECT name FROM tmp;";
-
-    public static void main(String[] args) {
+    public static void main(String[] args) throws JobParametersInvalidException, JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException, IOException {
         AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext();
+
+
         CommandLinePropertySource commandLinePropertySource = new SimpleCommandLinePropertySource(args);
         ctx.getEnvironment().getPropertySources().addFirst(commandLinePropertySource);
+
         ctx.scan("com.ef");
 
         ctx.refresh();
 
-        RunParamConfig runParamConfig = ctx.getBean(RunParamConfig.class);
-        System.out.println(runParamConfig.getThreshold());
+        JobLauncher jobLauncher = ctx.getBean(JobLauncher.class);
+        Job job = ctx.getBean(Job.class);
+
+        jobLauncher.run(job, new JobParameters());
 
         ctx.close();
     }
