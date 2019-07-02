@@ -19,31 +19,25 @@ repositories {
     mavenCentral()
 }
 
+ext.springVersion = '5.1.8.RELEASE'
+ext.springBatchVersion = '4.1.2.RELEASE'
+ext.slf4jVersion = '1.7.26'
+
 dependencies {
-    compile(group: 'org.springframework', name: 'spring-core', version: '5.1.8.RELEASE')
+    compile("org.springframework:spring-core:${springVersion}")
+    compile("org.springframework:spring-context:${springVersion}")
+    compile("org.springframework:spring-tx:${springVersion}")
+    compile("org.springframework:spring-context-support:${springVersion}")
+    compile("org.springframework:spring-jdbc:${springVersion}")
 
-    compile(group: 'mysql', name: 'mysql-connector-java', version: '8.0.16')
+    compile("org.springframework.batch:spring-batch-infrastructure:${springBatchVersion}")
+    compile("org.springframework.batch:spring-batch-core:${springBatchVersion}")
 
-    compile(group: 'org.springframework', name: 'spring-context', version: '5.1.8.RELEASE')
+    compile("mysql:mysql-connector-java:8.0.16")
 
-    compile(group: 'org.springframework', name: 'spring-context-support', version: '5.1.8.RELEASE')
-
-    compile(group: 'org.springframework', name: 'spring-jdbc', version: '5.1.8.RELEASE')
-
-    compile(group: 'org.springframework.batch', name: 'spring-batch-infrastructure', version: '4.1.2.RELEASE')
-
-    compile(group: 'org.springframework.batch', name: 'spring-batch-core', version: '4.1.2.RELEASE')
-
-    compile(group: 'org.springframework', name: 'spring-tx', version: '5.1.8.RELEASE')
-
-    compile(group: 'org.hibernate', name: 'hibernate-core', version: '5.4.3.Final')
-
-    compile group: 'org.slf4j', name: 'jcl-over-slf4j', version: '1.7.26'
-    compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.26'
-    testCompile group: 'org.slf4j', name: 'slf4j-log4j12', version: '1.7.26'
-    compile group: 'log4j', name: 'log4j', version: '1.2.17'
-    compile group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: '2.12.0'
-
-
-
+    compile("org.slf4j:jcl-over-slf4j:${slf4jVersion}")
+    compile("org.slf4j:slf4j-api:${slf4jVersion}")
+    testCompile("org.slf4j:slf4j-log4j12:${slf4jVersion}")
+    compile("log4j:log4j:1.2.17")
+    compile("org.apache.logging.log4j:log4j-slf4j-impl:2.12.0")
 }
