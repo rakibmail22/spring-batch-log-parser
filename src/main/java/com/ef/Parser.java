@@ -1,17 +1,18 @@
 package com.ef;
 
+import com.ef.config.RunParamConfig;
+import com.ef.utils.StopWatch;
+import com.ef.utils.Utils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobParameters;
-import org.springframework.batch.core.JobParametersInvalidException;
 import org.springframework.batch.core.launch.JobLauncher;
-import org.springframework.batch.core.repository.JobExecutionAlreadyRunningException;
-import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
-import org.springframework.batch.core.repository.JobRestartException;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.core.env.CommandLinePropertySource;
 import org.springframework.core.env.SimpleCommandLinePropertySource;
 
-import java.io.IOException;
+import java.util.Arrays;
 
 /**
  * @author bashir
@@ -19,22 +20,48 @@ import java.io.IOException;
  */
 public class Parser {
 
-    public static void main(String[] args) throws JobParametersInvalidException, JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException, IOException {
-        AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext();
+    private static final Logger log = LoggerFactory.getLogger(Parser.class);
 
+    public static void main(String[] args) throws Exception {
+        Parser parserApp = new Parser();
 
-        CommandLinePropertySource commandLinePropertySource = new SimpleCommandLinePropertySource(args);
-        ctx.getEnvironment().getPropertySources().addFirst(commandLinePropertySource);
+        log.debug("[Parser::main] App Arguments: {}", Arrays.toString(args));
 
-        ctx.scan("com.ef");
+        parserApp.run(args);
+    }
 
-        ctx.refresh();
+    public void run(String... args) throws Exception {
+        AnnotationConfigApplicationContext ctx = createAndInitContext(args);
 
-        JobLauncher jobLauncher = ctx.getBean(JobLauncher.class);
-        Job job = ctx.getBean(Job.class);
+        RunParamConfig runParamConfig = ctx.getBean(RunParamConfig.class);
 
-        jobLauncher.run(job, new JobParameters());
+        if (runParamConfig.isValid()) {
+            StopWatch stopWatch = StopWatch.start();
+            JobLauncher jobLauncher = ctx.getBean(JobLauncher.class);
+            Job job = ctx.getBean(Job.class);
+
+            jobLauncher.run(job, new JobParameters());
+
+            log.debug("[Parser::run] Job Execution Time: {} ms", stopWatch.elapsedTime());
+        } else {
+            System.out.println(Utils.INVALID_ARG_STR);
+        }
 
         ctx.close();
+    }
+
+    private static AnnotationConfigApplicationContext createAndInitContext(String... args) {
+        StopWatch stopWatch = StopWatch.start();
+        AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext();
+
+        CommandLinePropertySource commandLinePropertySource = new SimpleCommandLinePropertySource(args);
+
+        ctx.getEnvironment().getPropertySources().addFirst(commandLinePropertySource);
+        ctx.scan("com.ef");
+        ctx.refresh();
+
+        log.debug("[Parser::createAndInitContext] Context Initialization Time: {} ms", stopWatch.elapsedTime());
+
+        return ctx;
     }
 }

@@ -1,6 +1,7 @@
 package com.ef.service;
 
 import com.ef.model.LogEntry;
+import com.ef.utils.Utils;
 import org.springframework.batch.item.ItemProcessor;
 
 import java.time.LocalDateTime;
@@ -17,8 +18,7 @@ public class LogItemProcessor implements ItemProcessor<LogEntry, LogEntry> {
         LogEntry entry = new LogEntry();
         entry.setDateStr(item.getDateStr());
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
-        entry.setEntryDate(LocalDateTime.parse(item.getDateStr(), formatter));
+        entry.setEntryDate(LocalDateTime.parse(item.getDateStr(), Utils.DATE_TIME_FORMATTER_24H));
 
         entry.setIp(item.getIp());
         entry.setRequest(item.getRequest());

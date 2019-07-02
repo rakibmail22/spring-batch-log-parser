@@ -1,12 +1,15 @@
 package com.ef.model;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
  * @author bashir
  * @since 1/7/19.
  */
-public class LogEntry {
+public class LogEntry implements Serializable {
+
+    private static final long serialVersionUID = 23L;
 
     private String dateStr;
 

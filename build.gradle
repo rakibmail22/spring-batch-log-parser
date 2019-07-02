@@ -19,20 +19,31 @@ repositories {
     mavenCentral()
 }
 
-configurations.all {
-    exclude group: "commons-logging", module: "commons-logging"
-}
-
 dependencies {
-    compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.16'
-    compile group: 'org.springframework', name: 'spring-core', version: '5.1.8.RELEASE'
-    compile group: 'org.springframework', name: 'spring-context', version: '5.1.8.RELEASE'
-    compile group: 'org.springframework', name: 'spring-context-support', version: '5.1.8.RELEASE'
-    compile group: 'org.springframework', name: 'spring-jdbc', version: '5.1.8.RELEASE'
-    compile group: 'org.springframework.batch', name: 'spring-batch-infrastructure', version: '4.1.2.RELEASE'
-    compile group: 'org.springframework.batch', name: 'spring-batch-core', version: '4.1.2.RELEASE'
-    compile group: 'org.springframework', name: 'spring-tx', version: '5.1.8.RELEASE'
+    compile(group: 'org.springframework', name: 'spring-core', version: '5.1.8.RELEASE')
 
-    compile group: 'org.hibernate', name: 'hibernate-core', version: '5.4.3.Final'
+    compile(group: 'mysql', name: 'mysql-connector-java', version: '8.0.16')
+
+    compile(group: 'org.springframework', name: 'spring-context', version: '5.1.8.RELEASE')
+
+    compile(group: 'org.springframework', name: 'spring-context-support', version: '5.1.8.RELEASE')
+
+    compile(group: 'org.springframework', name: 'spring-jdbc', version: '5.1.8.RELEASE')
+
+    compile(group: 'org.springframework.batch', name: 'spring-batch-infrastructure', version: '4.1.2.RELEASE')
+
+    compile(group: 'org.springframework.batch', name: 'spring-batch-core', version: '4.1.2.RELEASE')
+
+    compile(group: 'org.springframework', name: 'spring-tx', version: '5.1.8.RELEASE')
+
+    compile(group: 'org.hibernate', name: 'hibernate-core', version: '5.4.3.Final')
+
+    compile group: 'org.slf4j', name: 'jcl-over-slf4j', version: '1.7.26'
+    compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.26'
+    testCompile group: 'org.slf4j', name: 'slf4j-log4j12', version: '1.7.26'
+    compile group: 'log4j', name: 'log4j', version: '1.2.17'
+    compile group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: '2.12.0'
+
+
 
 }
