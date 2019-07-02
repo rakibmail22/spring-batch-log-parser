@@ -30,6 +30,9 @@ dependencies {
     compile("org.springframework:spring-context-support:${springVersion}")
     compile("org.springframework:spring-jdbc:${springVersion}")
 
+    testCompile("org.springframework:spring-test:${springVersion}")
+    testCompile("junit:junit:4.12")
+
     compile("org.springframework.batch:spring-batch-infrastructure:${springBatchVersion}")
     compile("org.springframework.batch:spring-batch-core:${springBatchVersion}")
 
